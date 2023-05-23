@@ -1,29 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 class Program
 {
     static void Main(string[] args)
     {
+        var timer = new System.Diagnostics.Stopwatch();
+        timer.Start();
         const int n = 1000000;
-        var primes = new List<int>();
         var isPrime = new bool[n + 1];
-        Parallel.For(2, n + 1, i =>
+        for (int i = 2; i <= n; i++)
         {
-            if (!isPrime[i])
+            isPrime[i] = true;
+        }
+        for (int i = 2; i <= n; i++)
+        {
+            if (isPrime[i])
             {
-                lock (primes)
-                {
-                    primes.Add(i);
-                }
+                Console.Write(i + " ");
                 for (int j = i * 2; j <= n; j += i)
                 {
-                    isPrime[j] = true;
+                    isPrime[j] = false;
                 }
             }
-        });
-        Console.WriteLine("Primes: " + string.Join(", ", primes));
+        }
+        timer.Stop();
+        Console.WriteLine(timer.Elapsed + " seconds");
     }
 }
